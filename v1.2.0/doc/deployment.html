@@ -30,7 +30,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Diagnostic" href="rpc_error_codes.html" />
+    <link rel="prev" title="Diagnostic" href="diagnostic.html" />
     <!-- Google tag (gtag.js) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZ08KXKV1G"></script>
     <script>
@@ -68,16 +68,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="launch.html">Launch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="camera_node/index_camera_node.html">Camera node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ods_node/index_ods_node.html">ODS node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="topics.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="services.html">Services</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parameters.html">Parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="multi_head.html">Multi-head</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rpc_error_codes.html">Diagnostic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostic.html">Diagnostic</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#build-the-docker-container">Build the docker container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deploy-the-container">Deploy the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resource-management">Resource management</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#distributed-setup">Distributed setup</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#primary-docker-container-ifm3d-ros2-node">Primary docker container: ifm3d-ros2 node</a></li>
 </ul>
@@ -120,8 +119,8 @@
 </div>
 <section id="build-the-docker-container">
 <h2>Build the docker container<a class="headerlink" href="#build-the-docker-container" title="Link to this heading"></a></h2>
-<p>We provide a Dockerfile and a build script to help you build a docker container with ifm3d and ifm3d-ros2. To use it, check out the <code class="docutils literal notranslate"><span class="pre">build_container.sh</span></code> script. Open it up and adjust the arguments to suit your target architecture (arm64v8 or amd64) and the targeted ifm3d and ifm3d-ros2 version. Then you can build the container:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./build_humble.sh
+<p>We provide a Dockerfile and a build script to help you build a docker container with <code class="docutils literal notranslate"><span class="pre">ifm3d</span></code> and <code class="docutils literal notranslate"><span class="pre">ifm3d-ros2</span></code>. To get started, check out the <a class="reference download internal" download="" href="../_downloads/61b99c5b8f88aa847fdaa60486fa1fab/build_container.sh"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">build_container.sh</span></code></span></a> script. Open it up and adjust the arguments to suit your target architecture (arm64v8 or amd64) and the targeted <code class="docutils literal notranslate"><span class="pre">ifm3d</span></code> and <code class="docutils literal notranslate"><span class="pre">ifm3d-ros2</span></code> version. Then you can build the container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./build_container.sh
 <span class="o">[</span>+<span class="o">]</span><span class="w"> </span>Building<span class="w"> </span><span class="m">675</span>.3s<span class="w"> </span><span class="o">(</span><span class="m">23</span>/23<span class="o">)</span><span class="w"> </span><span class="nv">FINISHED</span>
 <span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">[</span>internal<span class="o">]</span><span class="w"> </span>load<span class="w"> </span>build<span class="w"> </span>definition<span class="w"> </span>from<span class="w"> </span>Dockerfile<span class="w">                                                                                                                    </span><span class="m">0</span>.0s
 <span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>transferring<span class="w"> </span>dockerfile:<span class="w"> </span><span class="m">2</span>.92kB<span class="w">                                                                                                                                  </span><span class="m">0</span>.0s
@@ -156,7 +155,11 @@
 </section>
 <section id="deploy-the-container">
 <h2>Deploy the container<a class="headerlink" href="#deploy-the-container" title="Link to this heading"></a></h2>
-<p>To deploy the container on to the VPU, or use the container locally to interact with the O3R platform, please refer to our <a class="reference internal" href="#../../../documentation/SoftwareInterfaces/Docker/index_docker.md"><span class="xref myst">docker documentation</span></a>.</p>
+<p>To deploy the container on to the VPU, or use the container locally to interact with the O3R platform, please refer to our <a class="reference external" href="https://ifm3d.com/latest/SoftwareInterfaces/Docker/index_docker.html">docker documentation</a>.</p>
+</section>
+<section id="resource-management">
+<h2>Resource management<a class="headerlink" href="#resource-management" title="Link to this heading"></a></h2>
+<p>Resources on the OVP8xx are limited and shared between all the running processes. We recommend assigning the Docker process to specific cores so as not to interfere with other applications. Refer to <a class="reference external" href="https://ifm3d.com/latest/SoftwareInterfaces/Docker/cpu.html">the resource management documentation on ifm3d.com</a>.</p>
 </section>
 <section id="distributed-setup">
 <h2>Distributed setup<a class="headerlink" href="#distributed-setup" title="Link to this heading"></a></h2>
@@ -165,13 +168,14 @@ These instructions can be adapted to suit other architectural designs.</p>
 <section id="primary-docker-container-ifm3d-ros2-node">
 <h3>Primary docker container: ifm3d-ros2 node<a class="headerlink" href="#primary-docker-container-ifm3d-ros2-node" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
-<li><p>Build and deploy the docker container image to the VPU (see <a class="reference internal" href="#../../../documentation/SoftwareInterfaces/Docker/deployVPU.md"><span class="xref myst">the documentation on how to deploy a container</span></a>):</p></li>
+<li><p>Build and deploy the docker container image to the VPU (see <a class="reference external" href="https://ifm3d.com/latest/SoftwareInterfaces/Docker/deployVPU.html">the documentation on how to deploy a container</a>):</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>save<span class="w"> </span>docker.io/library/ifm3d-ros:humble-arm64_v8<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>-C<span class="w"> </span>oem@192.168.0.69<span class="w"> </span>docker<span class="w"> </span>load
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>SSH to the VPU and run the container:</p></li>
+<li></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ssh<span class="w"> </span>oem@192.168.0.69<span class="w"> </span><span class="c1">#Adapt to the IP address of your VPU</span>
 o3r-vpu-c0$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>--net<span class="o">=</span>host<span class="w"> </span>ifm3d-ros:humble-arm64_v8
@@ -205,7 +209,7 @@ root@952330b98eac:/home/ifm#
 <ol class="arabic simple">
 <li><p>Source ROS2 on the secondary machine:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>/opt/ros/galactic/setup.bash
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
 </pre></div>
 </div>
 <ul class="simple">
