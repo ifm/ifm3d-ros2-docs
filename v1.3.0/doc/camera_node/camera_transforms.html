@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camera Transforms and Calibration &mdash; ifm3d-ros2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5800d392" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=d9f55abb"></script>
+        <script src="../../_static/js/versionwarning.js?v=d4224a34"></script>
+        <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Multi head launch file configuration" href="multi_head.html" />
+    <link rel="prev" title="Parameters" href="parameters.html" />
+    <!-- Google tag (gtag.js) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZ08KXKV1G"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-ZZ08KXKV1G');
+    </script> -->
+     
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ifm3d-ros2
+          </a>
+              <div class="version">
+                v1.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index_camera_node.html">Camera node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="launch.html">Launch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics.html">Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html">Parameters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Transforms and Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transform-hierarchy">Transform Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calibration-reference-point">Calibration Reference Point</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#additional-calibration-resources">Additional Calibration Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calibration-process">Calibration Process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#where-to-calibrate">Where to Calibrate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#method-1-using-ifm-vision-assistant">Method 1: Using ifm Vision Assistant</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#method-2-json-configuration-file">Method 2: JSON Configuration File</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#published-transforms">Published Transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#base-to-mounting-transform">1. Base to Mounting Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mounting-to-optical-transform">2. Mounting to Optical Transform</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#point-cloud-reference-frame">Point Cloud Reference Frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transform-configuration-parameters">Transform Configuration Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-with-ros-navigation-stack">Integration with ROS Navigation Stack</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_head.html">Multi-camera applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ods_node/index_ods_node.html">ODS node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services.html">Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostic.html">Diagnostic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment.html">Deployment</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ifm3d-ros2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index_camera_node.html">Camera node</a></li>
+      <li class="breadcrumb-item active">Camera Transforms and Calibration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/doc/camera_node/camera_transforms.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="camera-transforms-and-calibration">
+<h1>Camera Transforms and Calibration<a class="headerlink" href="#camera-transforms-and-calibration" title="Link to this heading"></a></h1>
+<p>This document explains how the O3R camera transform mechanism works, the calibration process, and how transforms are published in ROS 2.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The O3R camera system uses a multi-level transform hierarchy to accurately position sensor data in 3D space. Understanding this hierarchy is crucial for proper integration with robotic systems and point cloud processing.</p>
+</section>
+<section id="transform-hierarchy">
+<h2>Transform Hierarchy<a class="headerlink" href="#transform-hierarchy" title="Link to this heading"></a></h2>
+<p>The O3R system defines three main coordinate frames:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code></strong> - The reference frame after calibration</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mounting_link</span></code></strong> - The physical mounting point of the camera</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">optical_link</span></code></strong> - The optical center of the camera sensor</p></li>
+</ol>
+<p><img alt="Transform hierarchy overview" src="../../_images/transforms-1.png" /></p>
+<p>The complete transform chain is: <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code> → <code class="docutils literal notranslate"><span class="pre">mounting_link</span></code> → <code class="docutils literal notranslate"><span class="pre">optical_link</span></code></p>
+</section>
+<section id="calibration-reference-point">
+<h2>Calibration Reference Point<a class="headerlink" href="#calibration-reference-point" title="Link to this heading"></a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The O3R calibration reference point, <code class="docutils literal notranslate"><span class="pre">mounting_link</span></code>, is located at the <strong>center back of the camera housing</strong>, not at the optical center. This is a key difference from some other camera systems.</p>
+</div>
+<p><img alt="Detailed view of mounting and optical frames" src="../../_images/transforms-2.png" /></p>
+<p>When performing calibration:</p>
+<ul class="simple">
+<li><p>The <strong>mounting frame</strong> reference is at the back of the O3R camera head housing</p></li>
+<li><p>Scale drawings for exact mounting dimensions can be found on <a class="reference external" href="https://www.ifm.com">ifm.com</a> in the download section for your specific camera model</p></li>
+<li><p>The <strong>optical frame</strong> is automatically calculated from factory intrinsic parameters</p></li>
+</ul>
+<section id="additional-calibration-resources">
+<h3>Additional Calibration Resources<a class="headerlink" href="#additional-calibration-resources" title="Link to this heading"></a></h3>
+<p>For comprehensive information about O3R calibration routines and best practices:</p>
+<ul class="simple">
+<li><p><strong>General calibration guide</strong>: <a class="reference external" href="https://ifm3d.com/latest/CalibrationRoutines/index_calibrations.html">O3R Calibration Routines</a></p></li>
+<li><p><strong>Introduction to calibrations</strong>: <a class="reference external" href="https://ifm3d.com/latest/CalibrationRoutines/IntroToCalibrations/README.html">Calibration Concepts</a></p></li>
+</ul>
+</section>
+</section>
+<section id="calibration-process">
+<h2>Calibration Process<a class="headerlink" href="#calibration-process" title="Link to this heading"></a></h2>
+<section id="where-to-calibrate">
+<h3>Where to Calibrate<a class="headerlink" href="#where-to-calibrate" title="Link to this heading"></a></h3>
+<p>Calibration should be performed <strong>in the ifm coordinate system</strong>, not in “ROS world” coordinates. There are two primary methods:</p>
+<section id="method-1-using-ifm-vision-assistant">
+<h4>Method 1: Using ifm Vision Assistant<a class="headerlink" href="#method-1-using-ifm-vision-assistant" title="Link to this heading"></a></h4>
+<p>The ifm Vision Assistant provides a graphical interface for camera calibration:</p>
+<ol class="arabic simple">
+<li><p>Connect to your O3R device via Vision Assistant</p></li>
+<li><p>Navigate to the camera configuration section</p></li>
+<li><p>Use the built-in calibration tools to set extrinsic parameters</p></li>
+<li><p>The calibration defines the transform from <code class="docutils literal notranslate"><span class="pre">mounting_link</span></code> to <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code></p></li>
+</ol>
+<p>For detailed instructions, refer to <a class="reference external" href="https://ifm3d.com/latest/SoftwareInterfaces/iVA/changing_parameters.html">changing parameters using ifm Vision Assistant</a>.</p>
+</section>
+<section id="method-2-json-configuration-file">
+<h4>Method 2: JSON Configuration File<a class="headerlink" href="#method-2-json-configuration-file" title="Link to this heading"></a></h4>
+<p>You can also calibrate via JSON configuration files. See the configuration documentation:</p>
+<ul class="simple">
+<li><p>For camera nodes: <a class="reference internal" href="parameters.html"><span class="std std-doc">Camera Parameters</span></a> (see <code class="docutils literal notranslate"><span class="pre">config_file</span></code> parameter)</p></li>
+<li><p>For ODS applications: <a class="reference internal" href="../ods_node/ods_configuration.html"><span class="std std-doc">ODS Configuration</span></a></p></li>
+</ul>
+<p>Example extrinsic calibration in JSON:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;ports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;port0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;processing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;extrinsicHeadToUser&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;rotX&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;rotY&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span>
+<span class="w">          </span><span class="nt">&quot;rotZ&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.57</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;transX&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;transY&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;transZ&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Independent Calibration Values</strong>: The rotation and translation values in the JSON configuration are applied <strong>independently</strong>, not sequentially. Each parameter contributes directly to the final transform matrix.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="published-transforms">
+<h2>Published Transforms<a class="headerlink" href="#published-transforms" title="Link to this heading"></a></h2>
+<p>After calibration, the ifm3d-ros2 node publishes the following transforms:</p>
+<section id="base-to-mounting-transform">
+<h3>1. Base to Mounting Transform<a class="headerlink" href="#base-to-mounting-transform" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>From</strong>: <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code></p></li>
+<li><p><strong>To</strong>: <code class="docutils literal notranslate"><span class="pre">mounting_link</span></code></p></li>
+<li><p><strong>Source</strong>: Extrinsic calibration parameters (<code class="docutils literal notranslate"><span class="pre">extrinsicHeadToUser</span></code>)</p></li>
+<li><p><strong>Purpose</strong>: Positions the camera relative to the calibrated reference frame</p></li>
+</ul>
+</section>
+<section id="mounting-to-optical-transform">
+<h3>2. Mounting to Optical Transform<a class="headerlink" href="#mounting-to-optical-transform" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>From</strong>: <code class="docutils literal notranslate"><span class="pre">mounting_link</span></code></p></li>
+<li><p><strong>To</strong>: <code class="docutils literal notranslate"><span class="pre">optical_link</span></code></p></li>
+<li><p><strong>Source</strong>: Factory intrinsic calibration parameters</p></li>
+<li><p><strong>Purpose</strong>: Provides the optical center for image and point cloud data</p></li>
+</ul>
+<p>Both transforms can be enabled/disabled via ROS parameters. See <a class="reference internal" href="parameters.html"><span class="std std-doc">Camera Parameters</span></a> for configuration options.</p>
+</section>
+</section>
+<section id="point-cloud-reference-frame">
+<h2>Point Cloud Reference Frame<a class="headerlink" href="#point-cloud-reference-frame" title="Link to this heading"></a></h2>
+<p>After calibration, all point cloud data is published with <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code> as the reference frame. This means:</p>
+<ul class="simple">
+<li><p>Point cloud coordinates are relative to your calibrated reference system</p></li>
+<li><p>The calibration establishes the relationship between camera data and your robot/world coordinate system</p></li>
+<li><p>Visualization tools like RViz will display the point cloud in the <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code> frame</p></li>
+</ul>
+</section>
+<section id="transform-configuration-parameters">
+<h2>Transform Configuration Parameters<a class="headerlink" href="#transform-configuration-parameters" title="Link to this heading"></a></h2>
+<p>The transform publishing behavior can be controlled via ROS parameters:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">~/tf.base_frame_name</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code></p></td>
+<td><p>Name for the ifm reference frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">~/tf.mounting_frame_name</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">camera_mounting_link</span></code></p></td>
+<td><p>Name for the camera mounting frame</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">~/tf.optical_frame_name</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">camera_optical_link</span></code></p></td>
+<td><p>Name for the optical frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">~/tf.publish_base_to_mounting</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Publish base→mounting transform</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">~/tf.publish_mounting_to_optical</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Publish mounting→optical transform</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="integration-with-ros-navigation-stack">
+<h2>Integration with ROS Navigation Stack<a class="headerlink" href="#integration-with-ros-navigation-stack" title="Link to this heading"></a></h2>
+<p>For integration with ROS navigation and other robotics applications:</p>
+<ol class="arabic simple">
+<li><p><strong>Robot Base Link</strong>: Your robot should publish a transform from its <code class="docutils literal notranslate"><span class="pre">base_link</span></code> to <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code></p></li>
+<li><p><strong>Static Transform</strong>: This can typically be a static transform since the camera position relative to the robot is fixed</p></li>
+<li><p><strong>Multiple Cameras</strong>: Each camera can have its own <code class="docutils literal notranslate"><span class="pre">ifm_base_link</span></code> or share a common reference frame</p></li>
+</ol>
+<p>Example static transform publisher:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>tf2_ros<span class="w"> </span>static_transform_publisher<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>base_link<span class="w"> </span>ifm_base_link
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+<html>
+<head>
+ 
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="footer, address, phone, icons" />
+ 
+	<title>Footer With Address And Phones</title>
+	
+	
+ 
+</head>
+ 
+	<body>
+		
+		<footer class="footer-distributed">
+ 
+		<div class="footer-left">
+ 
+		<p class="footer-links">
+		<a href="index.html">Home</a>
+	·
+		<a href="http://www.o3r.ifm" target="_blank">Learn more</a>
+	·
+		<a href="/latest/_static/privacy-policy.html" target="_blank">Privacy Policy</a>
+
+		</p>
+ 
+		<p class="footer-company-name">ifm robotics &copy; 2023</p>
+		</div>
+		
+		<div class="footer-center">
+ 
+		<div>
+		<i class="fa fa-envelope"></i>
+		<p><a href="mailto:support.efector.object-ident@ifm.com">support.efector.object-ident@ifm.com</a></p>
+		</div>
+ 
+		</div>
+ 
+		<div class="footer-right">
+ 
+		<div class="footer-icons">
+ 
+		<a href="https://www.facebook.com/ifmefector" target="_blank"><i class="fa fa-facebook"></i></a>
+		<a href="https://twitter.com/ifm_USA" target="_blank"><i class="fa fa-twitter"></i></a>
+		<a href="https://www.linkedin.com/showcase/ifm-efector" target="_blank"><i class="fa fa-linkedin"></i></a>
+		<a href="https://github.com/ifm" target="_blank"><i class="fa fa-github"></i></a>
+ 
+		</div>
+ 
+		</div>
+ 
+		</footer>
+ 
+	</body>
+ 
+</html>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
