@@ -157,11 +157,11 @@ After following these instructions, you will have set up and properly configured
 We recommend to use this method when re-configuring the application at runtime, for example to change the active ports.</p>
 <p>In this case, you can use the following command.
 This will switch the <code class="docutils literal notranslate"><span class="pre">activePorts</span></code> parameter of the application <code class="docutils literal notranslate"><span class="pre">app0</span></code> to <code class="docutils literal notranslate"><span class="pre">[&quot;port3&quot;]</span></code>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">&quot;{json: &#39;{\&quot;applications\&quot;:{\&quot;instances\&quot;:{\&quot;app0\&quot;:{\&quot;configuration\&quot;:{\&quot;activePorts\&quot;:[\&quot;port3\&quot;]}}}}}&#39;}&quot;</span>
-requester:<span class="w"> </span>making<span class="w"> </span>request:<span class="w"> </span>ifm3d_ros2.srv.Config_Request<span class="o">(</span><span class="nv">json</span><span class="o">=</span><span class="s1">&#39;{&quot;applications&quot;:{&quot;instances&quot;:{&quot;app0&quot;:{&quot;configuration&quot;:{&quot;activePorts&quot;:[&quot;port3&quot;]}}}}}&#39;</span><span class="o">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">"{json: '{\"applications\":{\"instances\":{\"app0\":{\"configuration\":{\"activePorts\":[\"port3\"]}}}}}'}"</span>
+requester:<span class="w"> </span>making<span class="w"> </span>request:<span class="w"> </span>ifm3d_ros2.srv.Config_Request<span class="o">(</span><span class="nv">json</span><span class="o">=</span><span class="s1">'{"applications":{"instances":{"app0":{"configuration":{"activePorts":["port3"]}}}}}'</span><span class="o">)</span>
 
 response:
-ifm3d_ros2.srv.Config_Response<span class="o">(</span><span class="nv">status</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">msg</span><span class="o">=</span><span class="s1">&#39;OK&#39;</span><span class="o">)</span>
+ifm3d_ros2.srv.Config_Response<span class="o">(</span><span class="nv">status</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">msg</span><span class="o">=</span><span class="s1">'OK'</span><span class="o">)</span>
 </pre></div>
 </div>
 <section id="switching-ods-presets-at-runtime">
@@ -169,15 +169,15 @@ ifm3d_ros2.srv.Config_Response<span class="o">(</span><span class="nv">status</s
 <p>It is also possible to load an ODS preset directly via the same <code class="docutils literal notranslate"><span class="pre">Config</span></code> service.
 This is equivalent to calling <code class="docutils literal notranslate"><span class="pre">o3r-&gt;Set(...)</span></code> with a partial JSON payload in C++.</p>
 <p>For example, to load preset <code class="docutils literal notranslate"><span class="pre">2</span></code> for application <code class="docutils literal notranslate"><span class="pre">app0</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">&quot;{json: &#39;{\&quot;applications\&quot;:{\&quot;instances\&quot;:{\&quot;app0\&quot;:{\&quot;presets\&quot;:{\&quot;load\&quot;:{\&quot;identifier\&quot;:2},\&quot;command\&quot;:\&quot;load\&quot;}}}}}&#39;}&quot;</span>
-requester:<span class="w"> </span>making<span class="w"> </span>request:<span class="w"> </span>ifm3d_ros2.srv.Config_Request<span class="o">(</span><span class="nv">json</span><span class="o">=</span><span class="s1">&#39;{&quot;applications&quot;:{&quot;instances&quot;:{&quot;app0&quot;:{&quot;presets&quot;:{&quot;load&quot;:{&quot;identifier&quot;:2},&quot;command&quot;:&quot;load&quot;}}}}}&#39;</span><span class="o">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">"{json: '{\"applications\":{\"instances\":{\"app0\":{\"presets\":{\"load\":{\"identifier\":2},\"command\":\"load\"}}}}}'}"</span>
+requester:<span class="w"> </span>making<span class="w"> </span>request:<span class="w"> </span>ifm3d_ros2.srv.Config_Request<span class="o">(</span><span class="nv">json</span><span class="o">=</span><span class="s1">'{"applications":{"instances":{"app0":{"presets":{"load":{"identifier":2},"command":"load"}}}}}'</span><span class="o">)</span>
 
 response:
-ifm3d_ros2.srv.Config_Response<span class="o">(</span><span class="nv">status</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">msg</span><span class="o">=</span><span class="s1">&#39;OK&#39;</span><span class="o">)</span>
+ifm3d_ros2.srv.Config_Response<span class="o">(</span><span class="nv">status</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">msg</span><span class="o">=</span><span class="s1">'OK'</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>You can switch to another preset by changing only <code class="docutils literal notranslate"><span class="pre">identifier</span></code>, for example <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">&quot;{json: &#39;{\&quot;applications\&quot;:{\&quot;instances\&quot;:{\&quot;app0\&quot;:{\&quot;presets\&quot;:{\&quot;load\&quot;:{\&quot;identifier\&quot;:1},\&quot;command\&quot;:\&quot;load\&quot;}}}}}&#39;}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/ods/Config<span class="w"> </span>ifm3d_ros2/srv/Config<span class="w"> </span><span class="s2">"{json: '{\"applications\":{\"instances\":{\"app0\":{\"presets\":{\"load\":{\"identifier\":1},\"command\":\"load\"}}}}}'}"</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -196,34 +196,34 @@ To re-configure a node using a new configuration file, the <code class="docutils
 <p>The default ODS parameters include a sample configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">/ifm3d/ods</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">config_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;config/o3r_configs/o3r_ods.json&quot;</span>
+<span class="w">    </span><span class="nt">config_file</span><span class="p">:</span><span class="w"> </span><span class="s">"config/o3r_configs/o3r_ods.json"</span>
 <span class="w">    </span><span class="c1"># ... other parameters</span>
 </pre></div>
 </div>
 <p>The referenced JSON file (<code class="docutils literal notranslate"><span class="pre">config/o3r_configs/o3r_ods.json</span></code>) sets up an ODS application on port2 and port3 <strong>without</strong> calibration:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;applications&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;instances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;app0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;class&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ods&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ODS application&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;ports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;port2&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;port3&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;port6&quot;</span>
+<span class="w">  </span><span class="nt">"applications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"instances"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"app0"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"class"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ods"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ODS application"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"ports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="s2">"port2"</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">"port3"</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">"port6"</span>
 <span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RUN&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;configuration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;maxNumSimultaneousCameras&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;vo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;voPorts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">              </span><span class="s2">&quot;port2&quot;</span><span class="p">,</span>
-<span class="w">              </span><span class="s2">&quot;port3&quot;</span>
+<span class="w">        </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RUN"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"configuration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"maxNumSimultaneousCameras"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"vo"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"voPorts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="s2">"port2"</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">"port3"</span>
 <span class="w">            </span><span class="p">]</span>
 <span class="w">          </span><span class="p">},</span>
-<span class="w">          </span><span class="nt">&quot;grid&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;maxHeight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2.2</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;rangeOfInterest&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span>
+<span class="w">          </span><span class="nt">"grid"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"maxHeight"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.2</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"rangeOfInterest"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
@@ -247,7 +247,7 @@ To re-configure a node using a new configuration file, the <code class="docutils
 <p>To apply a new configuration file:</p>
 <ol class="arabic">
 <li><p>Update the <code class="docutils literal notranslate"><span class="pre">config_file</span></code> parameter:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>/ifm3d/ods<span class="w"> </span>config_file<span class="w"> </span><span class="s2">&quot;path/to/new/config.json&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>/ifm3d/ods<span class="w"> </span>config_file<span class="w"> </span><span class="s2">"path/to/new/config.json"</span>
 </pre></div>
 </div>
 </li>

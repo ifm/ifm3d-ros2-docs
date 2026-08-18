@@ -169,23 +169,23 @@ If the goal field <code class="docutils literal notranslate"><span class="pre">s
 <p>Actions use a nested <code class="docutils literal notranslate"><span class="pre">request</span></code> field for their parameters. Here are examples for each action type:</p>
 <section id="get-pallet-single-detection">
 <h4>Get Pallet (single detection)<a class="headerlink" href="#get-pallet-single-detection" title="Link to this heading"></a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_pallet<span class="w"> </span>ifm3d_ros2/action/GetPallet<span class="w"> </span><span class="s2">&quot;{request: {depth_hint: 1.5, pallet_index: 0, pallet_order: \&quot;zDescending\&quot;}}&quot;</span><span class="w"> </span>--feedback
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_pallet<span class="w"> </span>ifm3d_ros2/action/GetPallet<span class="w"> </span><span class="s2">"{request: {depth_hint: 1.5, pallet_index: 0, pallet_order: \"zDescending\"}}"</span><span class="w"> </span>--feedback
 </pre></div>
 </div>
 </section>
 <section id="get-rack-single-detection">
 <h4>Get Rack (single detection)<a class="headerlink" href="#get-rack-single-detection" title="Link to this heading"></a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">&quot;{request: {horizontal_drop_position: \&quot;left\&quot;, vertical_drop_position: \&quot;interior\&quot;, depth_hint: 1.8, z_hint: -0.4}}&quot;</span><span class="w"> </span>--feedback
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">"{request: {horizontal_drop_position: \"left\", vertical_drop_position: \"interior\", depth_hint: 1.8, z_hint: -0.4}}"</span><span class="w"> </span>--feedback
 </pre></div>
 </div>
 <p>With a custom clearing volume:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">&quot;{request: {horizontal_drop_position: \&quot;left\&quot;, vertical_drop_position: \&quot;interior\&quot;, depth_hint: 1.8, z_hint: 0.4, clearing_volume: {x_min: -0.1, x_max: 1.2, y_min: 0.1, y_max: 1.3, z_min: 0.1, z_max: 0.4}}}&quot;</span><span class="w"> </span>--feedback
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">"{request: {horizontal_drop_position: \"left\", vertical_drop_position: \"interior\", depth_hint: 1.8, z_hint: 0.4, clearing_volume: {x_min: -0.1, x_max: 1.2, y_min: 0.1, y_max: 1.3, z_min: 0.1, z_max: 0.4}}}"</span><span class="w"> </span>--feedback
 </pre></div>
 </div>
 </section>
 <section id="volume-check-single-detection">
 <h4>Volume Check (single detection)<a class="headerlink" href="#volume-check-single-detection" title="Link to this heading"></a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/volume_check<span class="w"> </span>ifm3d_ros2/action/VolumeCheck<span class="w"> </span><span class="s2">&quot;{request: {x_min: 1.0, x_max: 3.0, y_min: -0.5, y_max: 0.5, z_min: -0.2, z_max: 0.5}}&quot;</span><span class="w"> </span>--feedback
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/volume_check<span class="w"> </span>ifm3d_ros2/action/VolumeCheck<span class="w"> </span><span class="s2">"{request: {x_min: 1.0, x_max: 3.0, y_min: -0.5, y_max: 0.5, z_min: -0.2, z_max: 0.5}}"</span><span class="w"> </span>--feedback
 </pre></div>
 </div>
 </section>
@@ -196,21 +196,21 @@ If the goal field <code class="docutils literal notranslate"><span class="pre">s
 <section id="option-1-using-the-set-pds-mode-service">
 <h4>Option 1: Using the <code class="docutils literal notranslate"><span class="pre">set_pds_mode</span></code> service<a class="headerlink" href="#option-1-using-the-set-pds-mode-service" title="Link to this heading"></a></h4>
 <p>Switch to continuous pallet detection:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">&quot;{mode: 1, get_pallet_request: {depth_hint: 1.5, pallet_index: 0}}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">"{mode: 1, get_pallet_request: {depth_hint: 1.5, pallet_index: 0}}"</span>
 </pre></div>
 </div>
 <p>Switch to continuous rack detection:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">&quot;{mode: 2, get_rack_request: {horizontal_drop_position: \&quot;right\&quot;, vertical_drop_position: \&quot;interior\&quot;, depth_hint: 1.6, z_hint: 0.4}}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">"{mode: 2, get_rack_request: {horizontal_drop_position: \"right\", vertical_drop_position: \"interior\", depth_hint: 1.6, z_hint: 0.4}}"</span>
 </pre></div>
 </div>
 <p>Switch to continuous volume check:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">&quot;{mode: 3, volume_check_request: {x_min: 1.0, x_max: 3.0, y_min: -0.5, y_max: 0.5, z_min: -0.2, z_max: 0.5}}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">"{mode: 3, volume_check_request: {x_min: 1.0, x_max: 3.0, y_min: -0.5, y_max: 0.5, z_min: -0.2, z_max: 0.5}}"</span>
 </pre></div>
 </div>
 </section>
 <section id="option-2-using-action-goals-with-switch-to-continuous-mode-true">
 <h4>Option 2: Using action goals with <code class="docutils literal notranslate"><span class="pre">switch_to_continuous_mode:</span> <span class="pre">true</span></code><a class="headerlink" href="#option-2-using-action-goals-with-switch-to-continuous-mode-true" title="Link to this heading"></a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">&quot;{request: {depth_hint: 1.4, z_hint: 0.4}, switch_to_continuous_mode: true}&quot;</span><span class="w"> </span>--feedback
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/ifm3d/pds/get_rack<span class="w"> </span>ifm3d_ros2/action/GetRack<span class="w"> </span><span class="s2">"{request: {depth_hint: 1.4, z_hint: 0.4}, switch_to_continuous_mode: true}"</span><span class="w"> </span>--feedback
 </pre></div>
 </div>
 <p>This sends the action goal, returns the result, and then switches to continuous mode, continuously publishing detections to the <code class="docutils literal notranslate"><span class="pre">~/rack_detection</span></code> topic.</p>
@@ -219,7 +219,7 @@ If the goal field <code class="docutils literal notranslate"><span class="pre">s
 <section id="switching-back-to-action-only-mode">
 <h3>Switching Back to ACTION_ONLY Mode<a class="headerlink" href="#switching-back-to-action-only-mode" title="Link to this heading"></a></h3>
 <p>To stop continuous detections and return to action-only mode, use the <code class="docutils literal notranslate"><span class="pre">set_pds_mode</span></code> service:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">&quot;{mode: 0}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/ifm3d/pds/set_pds_mode<span class="w"> </span>ifm3d_ros2/srv/SetPdsMode<span class="w"> </span><span class="s2">"{mode: 0}"</span>
 </pre></div>
 </div>
 <div class="admonition note">
